@@ -1,0 +1,10 @@
+interface:
+https://www.w3schools.com/java/java_interface.asp
+
+https://www.uml-diagrams.org/class-reference.html
+
+attribute and method visiblity:
+https://www.uml-diagrams.org/visibility.html
+
+inheritance and polymorphism:
+http://www.cs.utsa.edu/~cs3443/notes/chapter10/ch10.html
