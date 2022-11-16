@@ -1,47 +1,68 @@
-<diagram program="umletino" version="15.0.0"><zoom_level>10</zoom_level><help_text>Space for diagram notes</help_text><element><id>UMLClass</id><coordinates><x>40</x><y>480</y><w>200</w><h>160</h></coordinates><panel_attributes>Line Segment
+<diagram program="umletino" version="15.0.0"><zoom_level>10</zoom_level><help_text>Space for diagram notes</help_text><element><id>UMLClass</id><coordinates><x>50</x><y>280</y><w>200</w><h>160</h></coordinates><panel_attributes>Line Segment
 --
-- p1:Point
-- p2:Point
-- color:Color
+- p1 : Point
+- p2 : Point
+- color : Color
 --
-+ setPosition(p1:Point, p2:Point)
-+ getPosition():Point
-+ setColor(color:Color)
-+ getColor():Color
-+ draw(canvas:Graphics )</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>40</x><y>270</y><w>180</w><h>130</h></coordinates><panel_attributes>Circle
++ setP1(p1 : Point)
++ getP1() : Point
++ setP2(p2 : Point)
++ getP2() : Point</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>200</x><y>530</y><w>180</w><h>170</h></coordinates><panel_attributes>Circle
 --
-- point:Point
-- color:Color
-- fillColor:Color
-- radius:double
+- position : Point
+- color : Color
+- fillColor : Color
+- radius : double
+- filled : boolean
 --
-+ setRadius(radius:double)
-+ getRadius():double</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>270</x><y>270</y><w>190</w><h>170</h></coordinates><panel_attributes>Rectangle
++ setRadius(radius : double)
++ getRadius() : double
++ setFilled(filled : boolean)
++ isFilled() : boolean</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>330</x><y>280</y><w>190</w><h>220</h></coordinates><panel_attributes>Rectangle
 --
-- point:Point
-- color:Color
-- fillColor:Color
-- length:double
-- width:double
+- position : Point
+- color : Color
+- fillColor : Color
+- length : double
+- width : double
+- filled : boolean
 --
-+ setLength(length:double)
-+ getLength():double
-+ setWidth(width:double)
-+ getWidth():double</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>150</x><y>40</y><w>210</w><h>150</h></coordinates><panel_attributes>&lt;&lt;interface&gt;&gt;
++ setLength(length : double)
++ getLength() : double
++ setWidth(width : double)
++ getWidth() : double
++ setFilled(filled : boolean)
++ isFilled() : boolean</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>190</x><y>50</y><w>210</w><h>150</h></coordinates><panel_attributes>&lt;&lt;interface&gt;&gt;
 Shape
 --
-+ setPosition(position:Point)
-+ getPosition():Point
-+ setColor(color:Color)
-+ getColor():Color
-+ setFillColor(color:Color)
-+ getFillColor():Color 
-+ draw(canvas:Graphics )</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>240</x><y>180</y><w>140</w><h>110</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;10;120;90</additional_attributes></element><element><id>Relation</id><coordinates><x>120</x><y>180</y><w>150</w><h>110</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>130;10;10;90</additional_attributes></element><element><id>UMLClass</id><coordinates><x>310</x><y>470</y><w>100</w><h>30</h></coordinates><panel_attributes>Square
---</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>350</x><y>430</y><w>30</w><h>60</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;40</additional_attributes></element><element><id>UMLClass</id><coordinates><x>460</x><y>40</y><w>210</w><h>110</h></coordinates><panel_attributes>&lt;&lt;interface&gt;&gt;
++ setPosition(position : Point)
++ getPosition() : Point
++ setColor(color : Color)
++ getColor() : Color
++ setFillColor(color : Color)
++ getFillColor() : Color 
++ draw(canvas : Graphics )</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>280</x><y>190</y><w>160</w><h>110</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;10;140;90</additional_attributes></element><element><id>Relation</id><coordinates><x>280</x><y>190</y><w>30</w><h>360</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;10;10;340</additional_attributes></element><element><id>UMLClass</id><coordinates><x>400</x><y>550</y><w>100</w><h>30</h></coordinates><panel_attributes>Square
+--</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>440</x><y>490</y><w>30</w><h>80</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;60</additional_attributes></element><element><id>UMLClass</id><coordinates><x>500</x><y>50</y><w>210</w><h>110</h></coordinates><panel_attributes>&lt;&lt;interface&gt;&gt;
 DrawingEngine
 --
-+ addShape(shape:Shape )
-+ removeShape(shape:Shape )
-+ getShapes():Shape[]
-+ refresh(canvas:Graphics )</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>510</x><y>270</y><w>100</w><h>30</h></coordinates><panel_attributes>Engine
---</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>550</x><y>140</y><w>30</w><h>150</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;10;10;130</additional_attributes></element></diagram>
++ addShape(shape : Shape )
++ removeShape(shape : Shape )
++ getShapes() : Shape[]
++ refresh(canvas : Graphics )</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>550</x><y>280</y><w>190</w><h>110</h></coordinates><panel_attributes>Engine
+--
+~ shps : ArrayList&lt;Shape&gt;
+~ nms : ArrayList&lt;String&gt;
+~ gui : Gui</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>590</x><y>150</y><w>30</w><h>150</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;10;10;130</additional_attributes></element><element><id>UMLClass</id><coordinates><x>540</x><y>480</y><w>230</w><h>210</h></coordinates><panel_attributes>Gui
+--
+~ engine : Engine
+~ names : String[]
+~ shapes : Shape[]
+--
++ window()
++ deleteButtonPressed()
++ colorizeButtonPressed()
++ circleButtonPressed()
++ lineButtonPressed()
++ squareButtonPressed()
++ rectangleButtonPressed()
++ newShape(shape : Shape) : Shape[]</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>140</x><y>190</y><w>170</w><h>110</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>150;10;10;90</additional_attributes></element></diagram>
