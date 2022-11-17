@@ -8,3 +8,9 @@ https://www.uml-diagrams.org/visibility.html
 
 inheritance and polymorphism:
 http://www.cs.utsa.edu/~cs3443/notes/chapter10/ch10.html
+
+Jpanel drawing:
+https://www2.seas.gwu.edu/~rhyspj/spring06cs143/lec10/lec103.html
+
+Assignable form of Class:
+https://stackoverflow.com/questions/541749/how-to-determine-an-objects-class/25426869
