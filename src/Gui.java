@@ -320,6 +320,7 @@ public class Gui{
         btn10.addActionListener(e -> {ncolor = btn10.getBackground();setColor();});
         btn11.addActionListener(e -> {ncolor = btn11.getBackground();setColor();});
         btn12.addActionListener(e -> {ncolor = btn12.getBackground();setColor();});
+        createbtn.addActionListener(e -> newShape());
 
         cf.add(cp,BorderLayout.CENTER);
         cf.setSize(400, 400);
@@ -377,63 +378,26 @@ public class Gui{
     public void circleButtonPressed(){
         flag = 1;
         createShape();
-//        Point p = new Point(50,50);
-//        Color clr = new Color(0,0,0,0);
-//        Circle c = new Circle(p,Color.BLACK, clr,30);
-//        newShape(c);
     }
 
     public void lineButtonPressed(){
         flag = 2;
         createShape();
-
-//        Point p1 = new Point(50,50);
-//        Point p2 = new Point(100,100);
-//        LineSegment l = new LineSegment(p1,p2,Color.BLACK);
-//        newShape(l);
     }
 
     public void squareButtonPressed(){
         flag = 3;
         createShape();
-
-//        Point p = new Point(50,50);
-//        Color clr = new Color(0,0,0,0);
-//        Square sq = new Square(p,Color.BLACK,clr,30);
-//        newShape(sq);
     }
 
     public void rectangleButtonPressed(){
         flag = 4;
         createShape();
-
-//        Point p = new Point(50,50);
-//        Color clr = new Color(0,0,0,0);
-//        Rectangle r = new Rectangle(p,Color.BLACK,clr,30, 40);
-//        newShape(r);
     }
 
     public void createShape(){
         af.setVisible(true);
-        Shape shape = null;
-        Color fclr = trans,clr = Color.BLACK;
-        Point p1 = null, p2 = null;
-        double rad = 0, wid = 0;
 
-        if(!posxtxt.getText().equals(null) && !posytxt.getText().equals(null))
-            p1 = new Point(Integer.parseInt(posxtxt.getText()),Integer.parseInt(posytxt.getText()));
-        if(x2txt.getText()!=null && y2txt.getText()!=null)
-            p2 = new Point(Integer.parseInt(x2txt.getText()),Integer.parseInt(y2txt.getText()));
-        if(radtxt.getText()!=null)
-            rad = Double.valueOf(radtxt.getText());
-        if(widtxt.getText()!=null)
-            wid = Double.valueOf(widtxt.getText());
-        if(clrcombox.getSelectedItem()!=null)
-            clr = engine.clrs.get(clrcombox.getSelectedIndex()-1);
-        if(fclrcombox.getSelectedItem()!=null)
-            fclr = engine.clrs.get(fclrcombox.getSelectedIndex()-1);
-
-        shape = new Circle(p1,clr, fclr,rad);
         switch (flag){
             case 1:     //circle
                 posxlbl.setText("X :");
@@ -447,12 +411,12 @@ public class Gui{
                 widtxt.setEnabled(false);
                 fclrlbl.setEnabled(true);
                 fclrcombox.setEnabled(true);
-                shape = new Circle(p1,clr, fclr,rad);
+                radlbl.setEnabled(true);
+                radtxt.setEnabled(true);
                 break;
             case 2:     //line
                 posxlbl.setText("point 1 X :");
                 posylbl.setText("point 1 Y :");
-                radlbl.setText("Length :");
                 x2lbl.setEnabled(true);
                 y2lbl.setEnabled(true);
                 x2txt.setEnabled(true);
@@ -461,6 +425,8 @@ public class Gui{
                 fclrcombox.setEnabled(false);
                 widlbl.setEnabled(false);
                 widtxt.setEnabled(false);
+                radlbl.setEnabled(false);
+                radtxt.setEnabled(false);
                 break;
             case 3:     //square
                 posxlbl.setText("X :");
@@ -474,6 +440,8 @@ public class Gui{
                 widtxt.setEnabled(false);
                 fclrlbl.setEnabled(true);
                 fclrcombox.setEnabled(true);
+                radlbl.setEnabled(true);
+                radtxt.setEnabled(true);
                 break;
             case 4:     //rectangle
                 posxlbl.setText("X :");
@@ -487,6 +455,8 @@ public class Gui{
                 widtxt.setEnabled(true);
                 fclrlbl.setEnabled(true);
                 fclrcombox.setEnabled(true);
+                radlbl.setEnabled(true);
+                radtxt.setEnabled(true);
                 break;
             default:
                 posxlbl.setText("X :");
@@ -500,14 +470,52 @@ public class Gui{
                 widtxt.setEnabled(true);
                 fclrlbl.setEnabled(true);
                 fclrcombox.setEnabled(true);
+                radlbl.setEnabled(true);
+                radtxt.setEnabled(true);
         }
-        Shape finalShape = shape;
-        createbtn.addActionListener(e -> {
-            engine.addShape(finalShape);
-            finalShape.draw(drwcanv.getGraphics());
-            updateExistShapes();
-            shapes.add(finalShape);
-        });
+    }
+
+    public void newShape(){
+        Shape shape;
+        Color fclr = trans,clr = Color.BLACK;
+        Point p1 = new Point(0,0), p2 = new Point(0,0);
+        double rad = 0, wid = 0;
+
+        if(!posxtxt.getText().isBlank() && !posytxt.getText().isBlank())
+            p1 = new Point(Integer.parseInt(posxtxt.getText()), Integer.parseInt(posytxt.getText()));
+        if(!x2txt.getText().isBlank() && !y2txt.getText().isBlank())
+            p2 = new Point(Integer.parseInt(x2txt.getText()),Integer.parseInt(y2txt.getText()));
+        if(!radtxt.getText().isBlank())
+            rad = Double.valueOf(radtxt.getText());
+        if(!widtxt.getText().isBlank())
+            wid = Double.valueOf(widtxt.getText());
+        if(clrcombox.getSelectedIndex()>0)
+            clr = engine.clrs.get(clrcombox.getSelectedIndex()-1);
+        if(fclrcombox.getSelectedIndex()>0)
+            fclr = engine.clrs.get(fclrcombox.getSelectedIndex()-1);
+
+        shape = new LineSegment(p1,p2,clr);
+        System.out.println(flag);
+        switch (flag){
+            case 1:
+                shape = new Circle(p1,clr,fclr,rad);
+                break;
+            case 2:
+                shape = new LineSegment(p1,p2,clr);
+                break;
+            case 3:
+                shape = new Square(p1,clr,fclr,rad);
+                break;
+            case 4:
+                shape = new Rectangle(p1,clr,fclr,rad,wid);
+                break;
+        }
+
+        print(shape);
+        engine.addShape(shape);
+        shape.draw(drwcanv.getGraphics());
+        updateExistShapes();
+        shapes.add(shape);
     }
 
     public void updateExistShapes(){
@@ -536,5 +544,14 @@ public class Gui{
 //                    System.out.println("\ni'm gui shape "+shapes.get(index)+" and my fill color is "+shapes.get(index).getFillColor());
         }
         drwcanv.repaint();
+    }
+
+    public void print(Shape shape){
+        System.out.println("-----------------");
+        System.out.println(shape);
+        System.out.println("pos: "+shape.getPosition().getX()+", "+shape.getPosition().getY());
+        System.out.println("color: "+shape.getColor());
+        System.out.println("fill color: "+shape.getFillColor());
+        System.out.println("-----------------");
     }
 }

@@ -39,12 +39,12 @@ public class LineSegment implements Shape{
 
     @Override
     public Point getPosition() {
-        return null;
+        return new Point((int)(getP1().getX()+getP2().getX())/2,(int)(getP1().getY()+getP2().getY())/2);
     }
 
     @Override
     public Color getColor() {
-        return color;
+        return this.color;
     }
 
     @Override
@@ -54,11 +54,11 @@ public class LineSegment implements Shape{
 
     @Override
     public void setFillColor(Color color) {
-
+        this.color = color;
     }
 
     @Override
     public Color getFillColor() {
-        return null;
+        return color;
     }
 }
