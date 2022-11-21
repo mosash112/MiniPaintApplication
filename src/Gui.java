@@ -59,6 +59,7 @@ public class Gui{
     private final JLabel widlbl = new JLabel("Width :");
     private final JTextField posxtxt = new JTextField(10);
     private final JTextField posytxt = new JTextField(10);
+    private final JOptionPane opt = new JOptionPane();
     private final JTextField x2txt = new JTextField(10);
     private final JTextField y2txt = new JTextField(10);
     private final JComboBox<String> clrcombox = new JComboBox<>(colors);
@@ -357,13 +358,13 @@ public class Gui{
     public void deleteButtonPressed(){
         int index = selectedShape()-1;
         Shape rs;
-        if (index>0) {
+//        if (index>0) {
 //            System.out.println(delbtn.getText() + " button was pushed\nitem number " + index + " will be deleted");
             rs = engine.getShapes()[index];
 //            System.out.println(rs);
             engine.removeShape(rs);
             shapes.remove(rs);
-        }
+//        }
         updateExistShapes();
         drwcanv.repaint();
     }
@@ -475,20 +476,40 @@ public class Gui{
         }
     }
 
-    public void newShape(){
+    public void newShape() {
         Shape shape;
-        Color fclr = trans,clr = Color.BLACK;
-        Point p1 = new Point(0,0), p2 = new Point(0,0);
+        Color fclr = trans, clr = Color.BLACK;
+        Point p1 = new Point(0, 0), p2 = new Point(0, 0);
         double rad = 0, wid = 0;
 
-        if(!posxtxt.getText().isBlank() && !posytxt.getText().isBlank())
-            p1 = new Point(Integer.parseInt(posxtxt.getText()), Integer.parseInt(posytxt.getText()));
-        if(!x2txt.getText().isBlank() && !y2txt.getText().isBlank())
-            p2 = new Point(Integer.parseInt(x2txt.getText()),Integer.parseInt(y2txt.getText()));
-        if(!radtxt.getText().isBlank())
-            rad = Double.valueOf(radtxt.getText());
-        if(!widtxt.getText().isBlank())
-            wid = Double.valueOf(widtxt.getText());
+        if (!posxtxt.getText().isBlank() && !posytxt.getText().isBlank()) {
+            try {
+                p1 = new Point(Integer.parseInt(posxtxt.getText()), Integer.parseInt(posytxt.getText()));
+            } catch (NumberFormatException e) {
+                opt.showMessageDialog(opt, "enter numbers only", "Input error", 2);
+            }
+        }
+        if (!x2txt.getText().isBlank() && !y2txt.getText().isBlank()) {
+            try{
+                p2 = new Point(Integer.parseInt(x2txt.getText()), Integer.parseInt(y2txt.getText()));
+            }catch(NumberFormatException e){
+                opt.showMessageDialog(opt, "enter numbers only", "Input error", 2);
+            }
+        }
+        if(!radtxt.getText().isBlank()) {
+            try{
+                rad = Double.valueOf(radtxt.getText());
+            }catch (NumberFormatException e) {
+                opt.showMessageDialog(opt, "enter numbers only","Input error",2);
+            }
+        }
+        if(!widtxt.getText().isBlank()) {
+            try{
+                wid = Double.valueOf(widtxt.getText());
+            }catch (NumberFormatException e) {
+                opt.showMessageDialog(opt, "enter numbers only","Input error",2);
+            }
+        }
         if(clrcombox.getSelectedIndex()>0)
             clr = engine.clrs.get(clrcombox.getSelectedIndex()-1);
         if(fclrcombox.getSelectedIndex()>0)
