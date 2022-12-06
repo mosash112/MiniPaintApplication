@@ -1,90 +1,125 @@
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
+import java.awt.event.ActionEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 
-
-public class Gui{
-
+public class Gui implements MouseListener, MouseMotionListener {
     Engine engine;
-    String[] names = {"--Choose Shape--"},colors = {"--Choose Color--","GREEN","RED","WHITE","BLACK","BLUE","CYAN","DARK_GRAY","GRAY","MAGENTA","ORANGE","PINK","YELLOW"};
-    ArrayList<Shape> shapes = new ArrayList<>();
-    Color ncolor, trans = new Color(0,0,0,0);
-    int flag = 0;
+    String[] names = {"--Choose Shape--"};
+    Color trans = new Color(255,255,225,0), newBorder, newFill;
+    int flag = 0, selected;
 
-    private final JFrame jf = new JFrame();
-    private final JPanel jp = new JPanel();
+//    main window components
+    private final JFrame mainFrame = new JFrame();
+    private final JPanel mainPanel = new JPanel();
     private final GridBagConstraints c = new GridBagConstraints();
-
     private final JLabel shapelbl = new JLabel("Select Shape");
     final JComboBox<String> shpcombox = new JComboBox<>(names);
-    private final JButton clrbtn = new JButton("Colorize");
+    private final JButton colorbtn = new JButton("Colorize");
     private final JButton delbtn = new JButton("Delete");
-    private final JButton crclbtn = new JButton("Circle");
-    private final JButton lnbtn = new JButton("Line Segment");
-    private final JButton sqrbtn = new JButton("Square");
-    private final JButton recbtn = new JButton("Rectangle");
-    final MyPanel drwcanv = new MyPanel(this,shapes);
-
-    private final JFrame cf = new JFrame();
-    private final JPanel cp = new JPanel();
-
-    private final JButton btn1 = new JButton("Green");
-    private final JButton btn2 = new JButton("Red");
-    private final JButton btn3 = new JButton("White");
-    private final JButton btn4 = new JButton("Black");
-    private final JButton btn5 = new JButton("Blue");
-    private final JButton btn6 = new JButton("Cyan");
-    private final JButton btn7 = new JButton("Dark Grey");
-    private final JButton btn8 = new JButton("Gray");
-    private final JButton btn9 = new JButton("Magenta");
-    private final JButton btn10 = new JButton("Orange");
-    private final JButton btn11 = new JButton("Pink");
-    private final JButton btn12 = new JButton("Yellow");
-    private final JLabel sname = new JLabel();
-    private final JRadioButton edgebtn = new JRadioButton("Edge color");
-    private final JRadioButton fillbtn = new JRadioButton("Fill color");
-    final ButtonGroup group = new ButtonGroup();
-
-    private final JFrame af = new JFrame();
-    private final JPanel ap = new JPanel();
-
-    private final JLabel poslbl = new JLabel("Position");
-    private final JLabel posxlbl = new JLabel("X :");
-    private final JLabel posylbl = new JLabel("Y :");
-    private final JLabel x2lbl = new JLabel("point 2 X :");
-    private final JLabel y2lbl = new JLabel("point 2 Y :");
-    private final JLabel clrlbl = new JLabel("Color :");
-    private final JLabel fclrlbl = new JLabel("Fill Color :");
-    private final JLabel radlbl = new JLabel("Radius :");
-    private final JLabel widlbl = new JLabel("Width :");
-    private final JTextField posxtxt = new JTextField(10);
-    private final JTextField posytxt = new JTextField(10);
+    private final JButton circlebtn = new JButton("Circle");
+    private final JButton linebtn = new JButton("Line Segment");
+    private final JButton tribtn = new JButton("Triangle");
+    private final JButton rectbtn = new JButton("Rectangle");
+    MyPanel drwcanv = new MyPanel(this);
     private final JOptionPane opt = new JOptionPane();
-    private final JTextField x2txt = new JTextField(10);
-    private final JTextField y2txt = new JTextField(10);
-    private final JComboBox<String> clrcombox = new JComboBox<>(colors);
-    private final JComboBox<String> fclrcombox = new JComboBox<>(colors);
-    private final JTextField radtxt = new JTextField(10);
-    private final JTextField widtxt = new JTextField(10);
 
-    private final JButton createbtn = new JButton("Create");
+    //    coloring window components
+    private final JPanel colorPanel = new JPanel();
+
+    //    circle parameters window components
+    private final JFrame circleFrame = new JFrame();
+    private final JPanel circlePanel = new JPanel();
+    private final JLabel cirposlbl = new JLabel("Position");
+    private final JLabel cirxlbl = new JLabel("X :");
+    private final JLabel cirylbl = new JLabel("Y :");
+    private final JLabel circleColorlbl = new JLabel("Color :");
+    private final JLabel circleFillColorlbl = new JLabel("Fill Color :");
+    private final JLabel radlbl = new JLabel("Radius :");
+    private final JTextField cirxtxt = new JTextField(10);
+    private final JTextField cirytxt = new JTextField(10);
+    private final JButton circleColor = new JButton("select Border Color");
+    private final JButton circleFillColor = new JButton("select Fill Color");
+    private final JTextField radtxt = new JTextField(10);
+    private final JButton createCircleBtn = new JButton("Create Circle");
+
+    //    rectangle parameters window components
+    private final JFrame rectFrame = new JFrame();
+    private final JPanel rectPanel = new JPanel();
+    private final JLabel rectposlbl = new JLabel("Position");
+    private final JLabel rectxlbl = new JLabel("X :");
+    private final JLabel rectylbl = new JLabel("Y :");
+    private final JLabel rectColorlbl = new JLabel("Color :");
+    private final JLabel rectFillColorlbl = new JLabel("Fill Color :");
+    private final JLabel heilbl = new JLabel("Height :");
+    private final JLabel widlbl = new JLabel("Width :");
+    private final JTextField rectxtxt = new JTextField(10);
+    private final JTextField rectytxt = new JTextField(10);
+    private final JButton rectColor = new JButton("select Border Color");
+    private final JButton rectFillColor = new JButton("select Fill Color");
+    private final JTextField heitxt = new JTextField(10);
+    private final JTextField widtxt = new JTextField(10);
+    private final JButton createRectBtn = new JButton("Create Rectangle");
+
+    //    line parameters window components
+    private final JFrame lineFrame = new JFrame();
+    private final JPanel linePanel = new JPanel();
+    private final JLabel lineposlbl = new JLabel("Position");
+    private final JLabel linexlbl = new JLabel("X1 :");
+    private final JLabel lineylbl = new JLabel("Y1 :");
+    private final JLabel linex2lbl = new JLabel("X2 :");
+    private final JLabel liney2lbl = new JLabel("Y2 :");
+    private final JLabel lineColorlbl = new JLabel("Color :");
+    private final JTextField linextxt = new JTextField(10);
+    private final JTextField lineytxt = new JTextField(10);
+    private final JTextField linex2txt = new JTextField(10);
+    private final JTextField liney2txt = new JTextField(10);
+    private final JButton lineColor = new JButton("select Border Color");
+    private final JButton createLineBtn = new JButton("Create Line");
+
+    //    triangle parameters window components
+    private final JFrame triFrame = new JFrame();
+    private final JPanel triPanel = new JPanel();
+    private final JLabel triposlbl = new JLabel("Position");
+    private final JLabel trixlbl = new JLabel("X1 :");
+    private final JLabel triylbl = new JLabel("Y1 :");
+    private final JLabel trix2lbl = new JLabel("X2 :");
+    private final JLabel triy2lbl = new JLabel("Y2 :");
+    private final JLabel trix3lbl = new JLabel("X3 :");
+    private final JLabel triy3lbl = new JLabel("Y3 :");
+    private final JLabel triColorlbl = new JLabel("Color :");
+    private final JLabel triFillColorlbl = new JLabel("Fill Color :");
+    private final JTextField trixtxt = new JTextField(10);
+    private final JTextField triytxt = new JTextField(10);
+    private final JTextField trix2txt = new JTextField(10);
+    private final JTextField triy2txt = new JTextField(10);
+    private final JTextField trix3txt = new JTextField(10);
+    private final JTextField triy3txt = new JTextField(10);
+    private final JButton triColor = new JButton("select Border Color");
+    private final JButton triFillColor = new JButton("select Fill Color");
+    private final JButton createTriBtn = new JButton("Create Triangle");
+
 
     public Gui() {
         window();
+        newCircle();
+        newRect();
+        newLine();
+        newTri();
     }
 
     public void window(){
-        jp.setBorder(BorderFactory.createEmptyBorder(15, 15, 10, 15));
-        jp.setLayout(new GridBagLayout());
-        cp.setBorder(BorderFactory.createEmptyBorder(15, 15, 10, 15));
-        cp.setLayout(new GridBagLayout());
-        ap.setBorder(BorderFactory.createEmptyBorder(15, 15, 10, 15));
-        ap.setLayout(new GridBagLayout());
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 10, 15));
+        mainPanel.setLayout(new GridBagLayout());
+
+        constraintReset();
 
         c.insets = new Insets(3,3,3,3);
         c.gridx = 0;
         c.gridy = 2;
-        jp.add(shapelbl,c);
+        mainPanel.add(shapelbl,c);
 
         shpcombox.setMaximumSize(shpcombox.getPreferredSize());
         shpcombox.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -92,36 +127,38 @@ public class Gui{
         c.gridy = 3;
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridwidth = 2;
-        jp.add(shpcombox,c);
+        mainPanel.add(shpcombox,c);
 
         c.gridx = 0;
         c.gridy = 4;
         c.gridwidth = 1;
         c.anchor = GridBagConstraints.LINE_START;
-        jp.add(clrbtn,c);
+        mainPanel.add(colorbtn,c);
 
         c.gridx = 1;
         c.gridy = 4;
-        jp.add(delbtn,c);
+        mainPanel.add(delbtn,c);
 
         c.gridx = 2;
         c.gridy = 0;
-        jp.add(crclbtn,c);
+        mainPanel.add(circlebtn,c);
 
         c.gridx = 3;
         c.gridy = 0;
-        jp.add(lnbtn,c);
+        mainPanel.add(linebtn,c);
 
         c.gridx = 4;
         c.gridy = 0;
-        jp.add(sqrbtn,c);
+        mainPanel.add(rectbtn,c);
 
         c.gridx = 5;
         c.gridy = 0;
-        jp.add(recbtn,c);
+        mainPanel.add(tribtn,c);
 
         drwcanv.setBackground(Color.WHITE);
         drwcanv.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        drwcanv.addMouseMotionListener(this);
+        drwcanv.addMouseListener(this);
         c.gridx = 2;
         c.gridy = 1;
         c.gridwidth = 4;
@@ -129,414 +166,556 @@ public class Gui{
         c.ipady = 200;
         c.ipadx = 400;
         c.fill = GridBagConstraints.BOTH;
-        jp.add(drwcanv,c);
+        mainPanel.add(drwcanv,c);
 
+        colorbtn.addActionListener(e -> colorizeButtonPressed(2));
+        delbtn.addActionListener(e -> deleteButtonPressed());
+        circlebtn.addActionListener(e -> {flag = 1;shapeParameters();});
+        linebtn.addActionListener(e -> {flag = 2;shapeParameters();});
+        tribtn.addActionListener(e -> {flag = 3;shapeParameters();});
+        rectbtn.addActionListener(e -> {flag = 4;shapeParameters();});
+
+        mainFrame.add(mainPanel, BorderLayout.WEST);
+        mainFrame.setSize(600,400);
+        mainFrame.setLocation(300, 400);
+        mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        mainFrame.setTitle("Mini-Paint");
+        mainFrame.pack();
+        mainFrame.setVisible(true);
+    }
+
+    public void constraintReset(){
 //        reset constraint values
         c.gridheight = 1;
         c.ipady = 0;
         c.ipadx = 0;
-
-        c.gridx = 0;
-        c.gridy = 0;
-        c.gridwidth = 4;
-        c.fill = GridBagConstraints.HORIZONTAL;
-        cp.add(sname,c);
-
-        group.add(edgebtn);
-        c.gridx = 0;
-        c.gridy = 1;
-        c.gridwidth = 2;
-        cp.add(edgebtn,c);
-
-        group.add(fillbtn);
-        c.gridx = 2;
-        c.gridy = 1;
-        cp.add(fillbtn,c);
-
-        c.gridx = 0;
-        c.gridy = 2;
         c.gridwidth = 1;
-        btn1.setBackground(Color.GREEN);
-        cp.add(btn1,c);
+    }
 
-        c.gridx = 1;
-        c.gridy = 2;
-        btn2.setBackground(Color.RED);
-        cp.add(btn2,c);
+    public void newCircle(){
+        circlePanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 10, 15));
+        circlePanel.setLayout(new GridBagLayout());
 
-        c.gridx = 2;
-        c.gridy = 2;
-        btn3.setBackground(Color.WHITE);
-        cp.add(btn3,c);
-
-        c.gridx = 3;
-        c.gridy = 2;
-        btn4.setBackground(Color.BLACK);
-        btn4.setForeground(Color.WHITE);
-        cp.add(btn4,c);
-
-        c.gridx = 0;
-        c.gridy = 3;
-        btn5.setBackground(Color.BLUE);
-        btn5.setForeground(Color.WHITE);
-        cp.add(btn5,c);
-
-        c.gridx = 1;
-        c.gridy = 3;
-        btn6.setBackground(Color.CYAN);
-        cp.add(btn6,c);
-
-        c.gridx = 2;
-        c.gridy = 3;
-        btn7.setBackground(Color.DARK_GRAY);
-        btn7.setForeground(Color.WHITE);
-        cp.add(btn7,c);
-
-        c.gridx = 3;
-        c.gridy = 3;
-        btn8.setBackground(Color.GRAY);
-        btn8.setForeground(Color.WHITE);
-        cp.add(btn8,c);
-
-        c.gridx = 0;
-        c.gridy = 4;
-        btn9.setBackground(Color.MAGENTA);
-        cp.add(btn9,c);
-
-        c.gridx = 1;
-        c.gridy = 4;
-        btn10.setBackground(Color.ORANGE);
-        cp.add(btn10,c);
-
-        c.gridx = 2;
-        c.gridy = 4;
-        btn11.setBackground(Color.PINK);
-        cp.add(btn11,c);
-
-        c.gridx = 3;
-        c.gridy = 4;
-        btn12.setBackground(Color.YELLOW);
-        cp.add(btn12,c);
+        constraintReset();
 
         c.gridx = 0;
         c.gridy = 0;
-        ap.add(poslbl,c);
+        c.gridwidth = 1;
+        circlePanel.add(cirposlbl,c);
 
         c.gridx = 0;
         c.gridy = 1;
-        ap.add(posxlbl,c);
+        circlePanel.add(cirxlbl,c);
 
-        posxtxt.setMaximumSize(posxtxt.getPreferredSize());
-        posxtxt.setAlignmentX(Component.CENTER_ALIGNMENT);
+        cirxtxt.setMaximumSize(cirxtxt.getPreferredSize());
+        cirxtxt.setAlignmentX(Component.CENTER_ALIGNMENT);
         c.gridx = 1;
         c.gridy = 1;
-        ap.add(posxtxt,c);
+        circlePanel.add(cirxtxt,c);
 
         c.gridx = 2;
         c.gridy = 1;
-        ap.add(posylbl,c);
+        circlePanel.add(cirylbl,c);
 
-        posytxt.setMaximumSize(posytxt.getPreferredSize());
-        posytxt.setAlignmentX(Component.CENTER_ALIGNMENT);
+        cirytxt.setMaximumSize(cirytxt.getPreferredSize());
+        cirytxt.setAlignmentX(Component.CENTER_ALIGNMENT);
         c.gridx = 3;
         c.gridy = 1;
-        ap.add(posytxt,c);
+        circlePanel.add(cirytxt,c);
 
         c.gridx = 0;
         c.gridy = 2;
-        ap.add(x2lbl,c);
+        circlePanel.add(circleColorlbl,c);
 
+        circleColor.setMaximumSize(circleColor.getPreferredSize());
+        circleColor.setAlignmentX(Component.CENTER_ALIGNMENT);
         c.gridx = 1;
         c.gridy = 2;
-        ap.add(x2txt,c);
+        circlePanel.add(circleColor,c);
 
         c.gridx = 2;
         c.gridy = 2;
-        ap.add(y2lbl,c);
+        circlePanel.add(circleFillColorlbl,c);
 
+        circleFillColor.setMaximumSize(circleFillColor.getPreferredSize());
+        circleFillColor.setAlignmentX(Component.CENTER_ALIGNMENT);
         c.gridx = 3;
         c.gridy = 2;
-        ap.add(y2txt,c);
+        circlePanel.add(circleFillColor,c);
 
         c.gridx = 0;
         c.gridy = 3;
-        ap.add(clrlbl,c);
-
-        clrcombox.setMaximumSize(clrcombox.getPreferredSize());
-        clrcombox.setAlignmentX(Component.CENTER_ALIGNMENT);
-        c.gridx = 1;
-        c.gridy = 3;
-        ap.add(clrcombox,c);
-
-        c.gridx = 2;
-        c.gridy = 3;
-        ap.add(fclrlbl,c);
-
-        fclrcombox.setMaximumSize(fclrcombox.getPreferredSize());
-        fclrcombox.setAlignmentX(Component.CENTER_ALIGNMENT);
-        c.gridx = 3;
-        c.gridy = 3;
-        ap.add(fclrcombox,c);
-
-        c.gridx = 0;
-        c.gridy = 4;
-        ap.add(radlbl,c);
+        circlePanel.add(radlbl,c);
 
         radtxt.setMaximumSize(radtxt.getPreferredSize());
         radtxt.setAlignmentX(Component.CENTER_ALIGNMENT);
         c.gridx = 1;
+        c.gridy = 3;
+        circlePanel.add(radtxt,c);
+
+        c.gridx = 1;
         c.gridy = 4;
-        ap.add(radtxt,c);
+        c.gridwidth = 2;
+        circlePanel.add(createCircleBtn,c);
+
+        circleColor.addActionListener(e -> colorizeButtonPressed(0));
+        circleFillColor.addActionListener(e -> colorizeButtonPressed(1));
+        createCircleBtn.addActionListener(e -> checkCircleParam());
+
+        circleFrame.add(circlePanel,BorderLayout.CENTER);
+        circleFrame.setSize(450, 220);
+        circleFrame.setLocation(300,400);
+        circleFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        circleFrame.setTitle("Circle attributes");
+        circleFrame.setVisible(false);
+    }
+
+    private void checkCircleParam() {
+        Color fillColor = newFill, color = newBorder;
+        Point[] points = new Point[]{new Point(0, 0), new Point(0, 0), new Point(0, 0)};
+        int rad = 0;
+
+        if (!cirxtxt.getText().isBlank() && !cirytxt.getText().isBlank()) {
+            try {
+                points[0] = new Point(Integer.parseInt(cirxtxt.getText()), Integer.parseInt(cirytxt.getText()));
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(opt, "enter numbers only", "Input error", JOptionPane.WARNING_MESSAGE);
+            }
+            cirxtxt.setText("");
+            cirytxt.setText("");
+        }
+        if(!radtxt.getText().isBlank()) {
+            try{
+                rad = Integer.parseInt(radtxt.getText());
+            }catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(opt, "enter numbers only","Input error", JOptionPane.WARNING_MESSAGE);
+            }
+        }
+        radtxt.setText("");
+        newShape(flag, points, color, fillColor, rad, rad);
+    }
+
+    public void newRect(){
+        rectPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 10, 15));
+        rectPanel.setLayout(new GridBagLayout());
+
+        constraintReset();
+
+        c.gridx = 0;
+        c.gridy = 0;
+        c.gridwidth = 1;
+        c.weightx = 0;
+        rectPanel.add(rectposlbl,c);
+
+        c.gridx = 0;
+        c.gridy = 1;
+        rectPanel.add(rectxlbl,c);
+
+        rectxtxt.setMaximumSize(rectxtxt.getPreferredSize());
+        rectxtxt.setAlignmentX(Component.CENTER_ALIGNMENT);
+        c.gridx = 1;
+        c.gridy = 1;
+        rectPanel.add(rectxtxt,c);
+
+        c.gridx = 2;
+        c.gridy = 1;
+        rectPanel.add(rectylbl,c);
+
+        rectytxt.setMaximumSize(rectytxt.getPreferredSize());
+        rectytxt.setAlignmentX(Component.CENTER_ALIGNMENT);
+        c.gridx = 3;
+        c.gridy = 1;
+        rectPanel.add(rectytxt,c);
+
+        c.gridx = 0;
+        c.gridy = 2;
+        rectPanel.add(rectColorlbl,c);
+
+        rectColor.setMaximumSize(rectColor.getPreferredSize());
+        rectColor.setAlignmentX(Component.CENTER_ALIGNMENT);
+        c.gridx = 1;
+        c.gridy = 2;
+        rectPanel.add(rectColor,c);
+
+        c.gridx = 2;
+        c.gridy = 2;
+        rectPanel.add(rectFillColorlbl,c);
+
+        rectFillColor.setMaximumSize(rectFillColor.getPreferredSize());
+        rectFillColor.setAlignmentX(Component.CENTER_ALIGNMENT);
+        c.gridx = 3;
+        c.gridy = 2;
+        rectPanel.add(rectFillColor,c);
+
+        c.gridx = 0;
+        c.gridy = 3;
+        rectPanel.add(heilbl,c);
+
+        heitxt.setMaximumSize(heitxt.getPreferredSize());
+        heitxt.setAlignmentX(Component.CENTER_ALIGNMENT);
+        c.gridx = 1;
+        c.gridy = 3;
+        rectPanel.add(heitxt,c);
+
+        c.gridx = 2;
+        c.gridy = 3;
+        rectPanel.add(widlbl,c);
+
+        c.gridx = 3;
+        c.gridy = 3;
+        rectPanel.add(widtxt,c);
+
+        c.gridx = 1;
+        c.gridy = 4;
+        c.gridwidth = 2;
+        rectPanel.add(createRectBtn,c);
+
+        rectColor.addActionListener(e -> colorizeButtonPressed(0));
+        rectFillColor.addActionListener(e -> colorizeButtonPressed(1));
+        createRectBtn.addActionListener(e -> checkRectParam());
+
+        rectFrame.add(rectPanel,BorderLayout.CENTER);
+        rectFrame.setSize(450, 220);
+        rectFrame.setLocation(300,400);
+        rectFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        rectFrame.setTitle("Rectangle attributes");
+        rectFrame.setVisible(false);
+    }
+
+    private void checkRectParam() {
+        Color fillColor = newFill, color = newBorder;
+        Point[] points = new Point[]{new Point(0, 0), new Point(0, 0), new Point(0, 0)};
+        int wid = 0, hei = 0;
+
+        if (!rectxtxt.getText().isBlank() && !rectytxt.getText().isBlank()) {
+            try {
+                points[0] = new Point(Integer.parseInt(rectxtxt.getText()), Integer.parseInt(rectytxt.getText()));
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(opt, "enter numbers only", "Input error", JOptionPane.WARNING_MESSAGE);
+            }
+        }
+        rectxtxt.setText("");
+        rectytxt.setText("");
+        if(!heitxt.getText().isBlank()) {
+            try{
+                hei = Integer.parseInt(heitxt.getText());
+            }catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(opt, "enter numbers only","Input error", JOptionPane.WARNING_MESSAGE);
+            }
+        }
+        heitxt.setText("");
+        if(!widtxt.getText().isBlank()) {
+            try{
+                wid = Integer.parseInt(widtxt.getText());
+            }catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(opt, "enter numbers only","Input error", JOptionPane.WARNING_MESSAGE);
+            }
+        }
+        widtxt.setText("");
+
+        newShape(flag, points, color, fillColor, hei, wid);
+    }
+
+    public void newLine(){
+        linePanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 10, 15));
+        linePanel.setLayout(new GridBagLayout());
+
+        constraintReset();
+
+        c.gridx = 0;
+        c.gridy = 0;
+        c.gridwidth = 1;
+        c.weightx = 0;
+        linePanel.add(lineposlbl,c);
+
+        c.gridx = 0;
+        c.gridy = 1;
+        linePanel.add(linexlbl,c);
+
+        linextxt.setMaximumSize(linextxt.getPreferredSize());
+        linextxt.setAlignmentX(Component.CENTER_ALIGNMENT);
+        c.gridx = 1;
+        c.gridy = 1;
+        linePanel.add(linextxt,c);
+
+        c.gridx = 2;
+        c.gridy = 1;
+        linePanel.add(lineylbl,c);
+
+        lineytxt.setMaximumSize(lineytxt.getPreferredSize());
+        lineytxt.setAlignmentX(Component.CENTER_ALIGNMENT);
+        c.gridx = 3;
+        c.gridy = 1;
+        linePanel.add(lineytxt,c);
+
+        c.gridx = 0;
+        c.gridy = 2;
+        linePanel.add(linex2lbl,c);
+
+        c.gridx = 1;
+        c.gridy = 2;
+        linePanel.add(linex2txt,c);
+
+        c.gridx = 2;
+        c.gridy = 2;
+        linePanel.add(liney2lbl,c);
+
+        c.gridx = 3;
+        c.gridy = 2;
+        linePanel.add(liney2txt,c);
+
+        c.gridx = 0;
+        c.gridy = 3;
+        linePanel.add(lineColorlbl,c);
+
+        lineColor.setMaximumSize(lineColor.getPreferredSize());
+        lineColor.setAlignmentX(Component.CENTER_ALIGNMENT);
+        c.gridx = 1;
+        c.gridy = 3;
+        linePanel.add(lineColor,c);
+
+        c.gridx = 1;
+        c.gridy = 4;
+        c.gridwidth = 2;
+        linePanel.add(createLineBtn,c);
+
+        lineColor.addActionListener(e -> colorizeButtonPressed(0));
+        createLineBtn.addActionListener(e -> checkLineParam());
+
+        lineFrame.add(linePanel,BorderLayout.CENTER);
+        lineFrame.setSize(450, 220);
+        lineFrame.setLocation(300,400);
+        lineFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        lineFrame.setTitle("Line attributes");
+        lineFrame.setVisible(false);
+    }
+
+    private void checkLineParam() {
+        Color color = newBorder;
+        Point[] points = new Point[]{new Point(0, 0), new Point(0, 0), new Point(0, 0)};
+
+        if (!linextxt.getText().isBlank() && !lineytxt.getText().isBlank()) {
+            try {
+                points[0] = new Point(Integer.parseInt(linextxt.getText()), Integer.parseInt(lineytxt.getText()));
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(opt, "enter numbers only", "Input error", JOptionPane.WARNING_MESSAGE);
+            }
+        }
+        linextxt.setText("");
+        lineytxt.setText("");
+        if (!linex2txt.getText().isBlank() && !liney2txt.getText().isBlank()) {
+            try{
+                points[1] = new Point(Integer.parseInt(linex2txt.getText()), Integer.parseInt(liney2txt.getText()));
+            }catch(NumberFormatException e){
+                JOptionPane.showMessageDialog(opt, "enter numbers only", "Input error", JOptionPane.WARNING_MESSAGE);
+            }
+        }
+        linex2txt.setText("");
+        liney2txt.setText("");
+
+        newShape(flag, points, color, null, 0, 0);
+    }
+
+    public void newTri(){
+        triPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 10, 15));
+        triPanel.setLayout(new GridBagLayout());
+
+        constraintReset();
+
+        c.gridx = 0;
+        c.gridy = 0;
+        c.gridwidth = 1;
+        c.weightx = 0;
+        triPanel.add(triposlbl,c);
+
+        c.gridx = 0;
+        c.gridy = 1;
+        triPanel.add(trixlbl,c);
+
+        trixtxt.setMaximumSize(trixtxt.getPreferredSize());
+        trixtxt.setAlignmentX(Component.CENTER_ALIGNMENT);
+        c.gridx = 1;
+        c.gridy = 1;
+        triPanel.add(trixtxt,c);
+
+        c.gridx = 2;
+        c.gridy = 1;
+        triPanel.add(triylbl,c);
+
+        triytxt.setMaximumSize(triytxt.getPreferredSize());
+        triytxt.setAlignmentX(Component.CENTER_ALIGNMENT);
+        c.gridx = 3;
+        c.gridy = 1;
+        triPanel.add(triytxt,c);
+
+        c.gridx = 0;
+        c.gridy = 2;
+        triPanel.add(trix2lbl,c);
+
+        c.gridx = 1;
+        c.gridy = 2;
+        triPanel.add(trix2txt,c);
+
+        c.gridx = 2;
+        c.gridy = 2;
+        triPanel.add(triy2lbl,c);
+
+        c.gridx = 3;
+        c.gridy = 2;
+        triPanel.add(triy2txt,c);
+
+        c.gridx = 0;
+        c.gridy = 3;
+        triPanel.add(trix3lbl,c);
+
+        c.gridx = 1;
+        c.gridy = 3;
+        triPanel.add(trix3txt,c);
+
+        c.gridx = 2;
+        c.gridy = 3;
+        triPanel.add(triy3lbl,c);
+
+        c.gridx = 3;
+        c.gridy = 3;
+        triPanel.add(triy3txt,c);
+
+        c.gridx = 0;
+        c.gridy = 4;
+        triPanel.add(triColorlbl,c);
+
+        triColor.setMaximumSize(triColor.getPreferredSize());
+        triColor.setAlignmentX(Component.CENTER_ALIGNMENT);
+        c.gridx = 1;
+        c.gridy = 4;
+        triPanel.add(triColor,c);
 
         c.gridx = 2;
         c.gridy = 4;
-        ap.add(widlbl,c);
+        triPanel.add(triFillColorlbl,c);
 
+        triFillColor.setMaximumSize(triFillColor.getPreferredSize());
+        triFillColor.setAlignmentX(Component.CENTER_ALIGNMENT);
         c.gridx = 3;
         c.gridy = 4;
-        ap.add(widtxt,c);
+        triPanel.add(triFillColor,c);
 
-        c.gridx = 0;
+        c.gridx = 1;
         c.gridy = 5;
-        c.weightx = 1;
-        c.gridwidth = 4;
-        ap.add(createbtn,c);
+        c.gridwidth = 2;
+        triPanel.add(createTriBtn,c);
 
-        shpcombox.addActionListener(e -> selectedShape());
-        delbtn.addActionListener(e -> deleteButtonPressed());
-        clrbtn.addActionListener(e -> colorizeButtonPressed());
-        crclbtn.addActionListener(e -> circleButtonPressed());
-        lnbtn.addActionListener(e -> lineButtonPressed());
-        sqrbtn.addActionListener(e -> squareButtonPressed());
-        recbtn.addActionListener(e -> rectangleButtonPressed());
-        btn1.addActionListener(e -> {ncolor = btn1.getBackground();setColor();});
-        btn2.addActionListener(e -> {ncolor = btn2.getBackground();setColor();});
-        btn3.addActionListener(e -> {ncolor = btn3.getBackground();setColor();});
-        btn4.addActionListener(e -> {ncolor = btn4.getBackground();setColor();});
-        btn5.addActionListener(e -> {ncolor = btn5.getBackground();setColor();});
-        btn6.addActionListener(e -> {ncolor = btn6.getBackground();setColor();});
-        btn7.addActionListener(e -> {ncolor = btn7.getBackground();setColor();});
-        btn8.addActionListener(e -> {ncolor = btn8.getBackground();setColor();});
-        btn9.addActionListener(e -> {ncolor = btn9.getBackground();setColor();});
-        btn10.addActionListener(e -> {ncolor = btn10.getBackground();setColor();});
-        btn11.addActionListener(e -> {ncolor = btn11.getBackground();setColor();});
-        btn12.addActionListener(e -> {ncolor = btn12.getBackground();setColor();});
-        createbtn.addActionListener(e -> newShape());
+        triColor.addActionListener(e -> colorizeButtonPressed(0));
+        triFillColor.addActionListener(e -> colorizeButtonPressed(1));
+        createTriBtn.addActionListener(e -> checkTriParam());
 
-        cf.add(cp,BorderLayout.CENTER);
-        cf.setSize(400, 400);
-        cf.setLocation(300,400);
-        cf.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        cf.setTitle("Choose a color");
-        cf.pack();
-        cf.setVisible(false);
+        triFrame.add(triPanel,BorderLayout.CENTER);
+        triFrame.setSize(450, 240);
+        triFrame.setLocation(300,400);
+        triFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        triFrame.setTitle("Triangle attributes");
+        triFrame.setVisible(false);
+    }
 
-        af.add(ap,BorderLayout.CENTER);
-        af.setSize(450, 220);
-        af.setLocation(300,400);
-        af.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        af.setTitle("Shape attributes");
-//        af.pack();
-        af.setVisible(false);
+    private void checkTriParam() {
+        Color fillColor = newFill, color = newBorder;
+        Point[] points = new Point[]{new Point(0, 0), new Point(0, 0), new Point(0, 0)};
 
-        jf.add(jp, BorderLayout.WEST);
-        jf.setSize(600,400);
-        jf.setLocation(300, 400);
-        jf.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        jf.setTitle("Mini-Paint");
-        jf.pack();
-        jf.setVisible(true);
+        if (!trixtxt.getText().isBlank() && !triytxt.getText().isBlank()) {
+            try {
+                points[0] = new Point(Integer.parseInt(trixtxt.getText()), Integer.parseInt(triytxt.getText()));
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(opt, "enter numbers only", "Input error", JOptionPane.WARNING_MESSAGE);
+            }
+        }
+        trixtxt.setText("");
+        triytxt.setText("");
+        if (!trix2txt.getText().isBlank() && !triy2txt.getText().isBlank()) {
+            try{
+                points[1] = new Point(Integer.parseInt(trix2txt.getText()), Integer.parseInt(triy2txt.getText()));
+            }catch(NumberFormatException e){
+                JOptionPane.showMessageDialog(opt, "enter numbers only", "Input error", JOptionPane.WARNING_MESSAGE);
+            }
+        }
+        trix2txt.setText("");
+        triy2txt.setText("");
+        if (!trix3txt.getText().isBlank() && !triy3txt.getText().isBlank()) {
+            try{
+                points[2] = new Point(Integer.parseInt(trix3txt.getText()), Integer.parseInt(triy3txt.getText()));
+            }catch(NumberFormatException e){
+                JOptionPane.showMessageDialog(opt, "enter numbers only", "Input error", JOptionPane.WARNING_MESSAGE);
+            }
+        }
+        trix3txt.setText("");
+        triy3txt.setText("");
+
+        newShape(flag, points, color, fillColor, 0, 0);
     }
 
     public int selectedShape(){
-//        if (shpcombox.getSelectedIndex()>0) {
-//            System.out.println("item number " + shpcombox.getSelectedIndex() + "\t" + shpcombox.getSelectedItem() + " shape was selected");
-//        }
         return shpcombox.getSelectedIndex();
     }
 
     public void deleteButtonPressed(){
         int index = selectedShape()-1;
-        Shape rs;
-//        if (index>0) {
-//            System.out.println(delbtn.getText() + " button was pushed\nitem number " + index + " will be deleted");
-            rs = engine.getShapes()[index];
-//            System.out.println(rs);
-            engine.removeShape(rs);
-            shapes.remove(rs);
-//        }
+        engine.removeShape(engine.getShapes()[index]);
         updateExistShapes();
-        drwcanv.repaint();
+        engine.refresh(drwcanv.getGraphics());
     }
 
-    public void colorizeButtonPressed(){
-        int index = selectedShape()-1;
-//        System.out.println(clrbtn.getText()+" button was pushed");
-        cf.setVisible(true);
-        sname.setText(engine.nms.get(index)+" shape");
-    }
-
-    public void circleButtonPressed(){
-        flag = 1;
-        createShape();
-    }
-
-    public void lineButtonPressed(){
-        flag = 2;
-        createShape();
-    }
-
-    public void squareButtonPressed(){
-        flag = 3;
-        createShape();
-    }
-
-    public void rectangleButtonPressed(){
-        flag = 4;
-        createShape();
-    }
-
-    public void createShape(){
-        af.setVisible(true);
-
-        switch (flag){
-            case 1:     //circle
-                posxlbl.setText("X :");
-                posylbl.setText("Y :");
-                radlbl.setText("Radius :");
-                x2lbl.setEnabled(false);
-                y2lbl.setEnabled(false);
-                x2txt.setEnabled(false);
-                y2txt.setEnabled(false);
-                widlbl.setEnabled(false);
-                widtxt.setEnabled(false);
-                fclrlbl.setEnabled(true);
-                fclrcombox.setEnabled(true);
-                radlbl.setEnabled(true);
-                radtxt.setEnabled(true);
+    public void colorizeButtonPressed(int j) {
+//        int index = selectedShape()-1;
+        switch (j){
+            case 0:
+                newBorder = JColorChooser.showDialog(colorPanel, "Border Color", Color.BLACK);
                 break;
-            case 2:     //line
-                posxlbl.setText("point 1 X :");
-                posylbl.setText("point 1 Y :");
-                x2lbl.setEnabled(true);
-                y2lbl.setEnabled(true);
-                x2txt.setEnabled(true);
-                y2txt.setEnabled(true);
-                fclrlbl.setEnabled(false);
-                fclrcombox.setEnabled(false);
-                widlbl.setEnabled(false);
-                widtxt.setEnabled(false);
-                radlbl.setEnabled(false);
-                radtxt.setEnabled(false);
-                break;
-            case 3:     //square
-                posxlbl.setText("X :");
-                posylbl.setText("Y :");
-                radlbl.setText("Length :");
-                x2lbl.setEnabled(false);
-                y2lbl.setEnabled(false);
-                x2txt.setEnabled(false);
-                y2txt.setEnabled(false);
-                widlbl.setEnabled(false);
-                widtxt.setEnabled(false);
-                fclrlbl.setEnabled(true);
-                fclrcombox.setEnabled(true);
-                radlbl.setEnabled(true);
-                radtxt.setEnabled(true);
-                break;
-            case 4:     //rectangle
-                posxlbl.setText("X :");
-                posylbl.setText("Y :");
-                radlbl.setText("Length :");
-                x2lbl.setEnabled(false);
-                y2lbl.setEnabled(false);
-                x2txt.setEnabled(false);
-                y2txt.setEnabled(false);
-                widlbl.setEnabled(true);
-                widtxt.setEnabled(true);
-                fclrlbl.setEnabled(true);
-                fclrcombox.setEnabled(true);
-                radlbl.setEnabled(true);
-                radtxt.setEnabled(true);
-                break;
-            default:
-                posxlbl.setText("X :");
-                posylbl.setText("Y :");
-                radlbl.setText("Radius :");
-                x2lbl.setEnabled(true);
-                y2lbl.setEnabled(true);
-                x2txt.setEnabled(true);
-                y2txt.setEnabled(true);
-                widlbl.setEnabled(true);
-                widtxt.setEnabled(true);
-                fclrlbl.setEnabled(true);
-                fclrcombox.setEnabled(true);
-                radlbl.setEnabled(true);
-                radtxt.setEnabled(true);
-        }
-    }
-
-    public void newShape() {
-        Shape shape;
-        Color fclr = trans, clr = Color.BLACK;
-        Point p1 = new Point(0, 0), p2 = new Point(0, 0);
-        double rad = 0, wid = 0;
-
-        if (!posxtxt.getText().isBlank() && !posytxt.getText().isBlank()) {
-            try {
-                p1 = new Point(Integer.parseInt(posxtxt.getText()), Integer.parseInt(posytxt.getText()));
-            } catch (NumberFormatException e) {
-                opt.showMessageDialog(opt, "enter numbers only", "Input error", 2);
-            }
-        }
-        if (!x2txt.getText().isBlank() && !y2txt.getText().isBlank()) {
-            try{
-                p2 = new Point(Integer.parseInt(x2txt.getText()), Integer.parseInt(y2txt.getText()));
-            }catch(NumberFormatException e){
-                opt.showMessageDialog(opt, "enter numbers only", "Input error", 2);
-            }
-        }
-        if(!radtxt.getText().isBlank()) {
-            try{
-                rad = Double.valueOf(radtxt.getText());
-            }catch (NumberFormatException e) {
-                opt.showMessageDialog(opt, "enter numbers only","Input error",2);
-            }
-        }
-        if(!widtxt.getText().isBlank()) {
-            try{
-                wid = Double.valueOf(widtxt.getText());
-            }catch (NumberFormatException e) {
-                opt.showMessageDialog(opt, "enter numbers only","Input error",2);
-            }
-        }
-        if(clrcombox.getSelectedIndex()>0)
-            clr = engine.clrs.get(clrcombox.getSelectedIndex()-1);
-        if(fclrcombox.getSelectedIndex()>0)
-            fclr = engine.clrs.get(fclrcombox.getSelectedIndex()-1);
-
-        shape = new LineSegment(p1,p2,clr);
-        System.out.println(flag);
-        switch (flag){
             case 1:
-                shape = new Circle(p1,clr,fclr,rad);
+                newFill = JColorChooser.showDialog(colorPanel, "Fill Color", trans);
                 break;
             case 2:
-                shape = new LineSegment(p1,p2,clr);
-                break;
-            case 3:
-                shape = new Square(p1,clr,fclr,rad);
-                break;
-            case 4:
-                shape = new Rectangle(p1,clr,fclr,rad,wid);
+                newBorder = JColorChooser.showDialog(colorPanel, "Border Color", Color.BLACK);
+                newFill = JColorChooser.showDialog(colorPanel, "Fill Color", trans);
                 break;
         }
+        if (newBorder==null)
+            newBorder = Color.BLACK;
+        if (newFill==null)
+            newFill = trans;
+        if (j==2) {
+            setColor(newFill, true);
+            setColor(newBorder, false);
+        }
+    }
 
-        print(shape);
-        engine.addShape(shape);
-        shape.draw(drwcanv.getGraphics());
+    public void shapeParameters(){
+        try{
+            drwcanv.setShapes(engine.getShapes());
+        }catch (NullPointerException e){
+            System.out.println("Couldn't retrieve shapes.");
+        }
+        mainFrame.setVisible(false);
+        switch (flag) {
+            case 1 ->     //circle
+                    circleFrame.setVisible(true);
+            case 2 ->     //line
+                    lineFrame.setVisible(true);
+            case 3 ->     //triangle
+                    triFrame.setVisible(true);
+            case 4 ->     //rectangle
+                    rectFrame.setVisible(true);
+        }
+    }
+
+    public void newShape(int f, Point[] points, Color color, Color fillColor, int rad, int wid) {
+        engine.newShape(f, points, color, fillColor, rad, wid);
         updateExistShapes();
-        shapes.add(shape);
+        mainFrame.setVisible(true);
+        switch (f) {
+            case 1 -> circleFrame.setVisible(false);
+            case 2 -> lineFrame.setVisible(false);
+            case 3 -> triFrame.setVisible(false);
+            case 4 -> rectFrame.setVisible(false);
+        }
     }
 
     public void updateExistShapes(){
@@ -549,30 +728,49 @@ public class Gui{
         shpcombox.setModel(model);
     }
 
-    public void setColor(){
-//        System.out.println(ncolor);
+    public void setColor(Color color, boolean fill){
         int index = selectedShape()-1;
-//        System.out.println(index);
-        if (edgebtn.isSelected()) {
-            engine.getShapes()[index].setColor(ncolor);
-            //        System.out.println("\ni'm engine shape "+engine.getShapes()[index]+" and my color is "+engine.getShapes()[index].getColor());
-            shapes.get(index).setColor(ncolor);
-            //        System.out.println("\ni'm gui shape "+shapes.get(index)+" and my color is "+shapes.get(index).getColor());
-        }else if (fillbtn.isSelected()){
-            engine.getShapes()[index].setFillColor(ncolor);
-//                    System.out.println("\ni'm engine shape "+engine.getShapes()[index]+" and my fill color is "+engine.getShapes()[index].getFillColor());
-            shapes.get(index).setFillColor(ncolor);
-//                    System.out.println("\ni'm gui shape "+shapes.get(index)+" and my fill color is "+shapes.get(index).getFillColor());
+        if (!fill) {
+            engine.getShapes()[index].setColor(color);
+        }else if (fill){
+            engine.getShapes()[index].setFillColor(color);
         }
-        drwcanv.repaint();
+        engine.refresh(drwcanv.getGraphics());
     }
 
-    public void print(Shape shape){
-        System.out.println("-----------------");
-        System.out.println(shape);
-        System.out.println("pos: "+shape.getPosition().getX()+", "+shape.getPosition().getY());
-        System.out.println("color: "+shape.getColor());
-        System.out.println("fill color: "+shape.getFillColor());
-        System.out.println("-----------------");
+    @Override
+    public void mouseClicked(MouseEvent e) {}
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        int x, y;
+        x = e.getX();
+        y = e.getY();
+        Point p = new Point(x, y);
+        selected = engine.checkContain(p);
+        shpcombox.setSelectedIndex(selected+1);
     }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {}
+
+    @Override
+    public void mouseEntered(MouseEvent e) {}
+
+    @Override
+    public void mouseExited(MouseEvent e) {}
+
+    @Override
+    public void mouseDragged(MouseEvent e) {
+        int x, y;
+        x = e.getX();
+        y = e.getY();
+        Point p = new Point(x, y);
+        if (selected >= 0)
+            engine.shps.get(selected).moveTo(p);
+        engine.refresh(drwcanv.getGraphics());
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e) {}
 }

@@ -1,72 +1,88 @@
-import javax.swing.*;
+import shapes.*;
+import shapes.Rectangle;
+
 import java.awt.*;
 import java.util.ArrayList;
-import static java.awt.Color.*;
+import java.util.Arrays;
 
 public class Engine implements DrawingEngine{
-    ArrayList<Shape> shps = new ArrayList<>();
+    ArrayList<AbstractShapeClass> shps = new ArrayList<>();
     ArrayList<String> nms = new ArrayList<>();
-    ArrayList<Color> clrs = new ArrayList<>();
-    Gui gui;
     int counter = 0;
+    Gui gui;
 
-//    colors = {"GREEN","RED","WHITE","BLACK","BLUE","CYAN","DARK_GRAY","GRAY","MAGENTA","ORANGE","PINK","YELLOW"}
-
-    public Engine() {
-        clrs.add(GREEN);
-        clrs.add(RED);
-        clrs.add(WHITE);
-        clrs.add(BLACK);
-        clrs.add(BLUE);
-        clrs.add(CYAN);
-        clrs.add(DARK_GRAY);
-        clrs.add(GRAY);
-        clrs.add(MAGENTA);
-        clrs.add(ORANGE);
-        clrs.add(PINK);
-        clrs.add(YELLOW);
-    }
+    public Engine() {}
 
     @Override
-    public void addShape(Shape shape) {
-        counter++;
-        if (Circle.class.isAssignableFrom(shape.getClass())){
-            shps.add(shape);
-            nms.add("circle_"+counter);
-        }else if (Square.class.isAssignableFrom(shape.getClass())){
-            shps.add(shape);
-            nms.add("square_"+counter);
-        }else if (Rectangle.class.isAssignableFrom(shape.getClass())){
-            shps.add(shape);
-            nms.add("rect_"+counter);
-        }else if (LineSegment.class.isAssignableFrom(shape.getClass())){
-            shps.add(shape);
-            nms.add("line_"+counter);
+    public void addShape(AbstractShapeClass shape) {
+        print(shape);
+        shape.draw(gui.drwcanv.getGraphics());
+    }
+
+    public void print(AbstractShapeClass shape){
+        System.out.println("-----------------");
+        System.out.println(shape);
+        System.out.println("pos: "+shape.getPosition().getX()+", "+shape.getPosition().getY());
+        System.out.println("color: "+shape.getColor());
+        System.out.println("fill color: "+shape.getFillColor());
+        System.out.println("-----------------");
+    }
+
+    public int checkContain(Point point){
+        int index = -1;
+        for (AbstractShapeClass s:shps) {
+            if (s.contains(point)) {
+                index = shps.indexOf(s);
+                System.out.println(index);
+            }
         }
+        return index;
     }
 
     @Override
-    public void removeShape(Shape shape) {
+    public void removeShape(AbstractShapeClass shape) {
         int index = shps.indexOf(shape);
-        System.out.println("removing selected shape...");
-//        System.out.println("index of remove "+index);
-//        System.out.println(nms.get(index));
-//        System.out.println(shape);
+        System.out.println("removing selected "+shape.getClass());
         nms.remove(nms.get(index));
         shps.remove(shape);
     }
 
     @Override
-    public Shape[] getShapes() {
-        Shape[] shapes = shps.toArray(new Shape[0]);
-        return shapes;
+    public AbstractShapeClass[] getShapes() {
+        return shps.toArray(new AbstractShapeClass[0]);
     }
 
     @Override
     public void refresh(Graphics canvas) {
         System.out.println("refreshing....");
-        for (Shape s:shps) {
-            s.draw(canvas);
+        gui.drwcanv.repaint();
+    }
+
+    public void newShape(int flag, Point[] ps, Color clr, Color fclr, int rad, int wid) {
+        AbstractShapeClass shape = null;
+        counter++;
+        System.out.println(counter);
+        switch (flag) {
+            case 1 -> {
+                shape = new Circle(ps[0], rad);
+                nms.add("circle_" + counter);
+            }
+            case 2 -> {
+                shape = new LineSegment(ps[0], ps[1]);
+                nms.add("line_" + counter);
+            }
+            case 3 -> {
+                shape = new Triangle(ps[0], ps[1], ps[2]);
+                nms.add("triangle_" + counter);
+            }
+            case 4 -> {
+                shape = new Rectangle(ps[0], rad, wid);
+                nms.add("rect_" + counter);
+            }
         }
+        shape.setColor(clr);
+        shape.setFillColor(fclr);
+        shps.add(shape);
+        addShape(shape);
     }
 }

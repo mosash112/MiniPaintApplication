@@ -1,3 +1,5 @@
+package shapes;
+
 import java.awt.*;
 
 public interface Shape {
@@ -6,8 +8,8 @@ public interface Shape {
     public void setPosition(Point position);
     public Point getPosition();
 
-    public void setColor(Color color);
+    public void setColor(Color borderColor);
     public Color getColor();
-    public void setFillColor(Color color);
+    public void setFillColor(Color fillColor);
     public Color getFillColor();
 }

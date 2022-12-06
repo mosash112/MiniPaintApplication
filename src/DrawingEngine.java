@@ -1,10 +1,12 @@
+import shapes.*;
+
 import java.awt.*;
 
 public interface DrawingEngine {
-    public void addShape(Shape shape);
-    public void removeShape(Shape shape);
+    public void addShape(AbstractShapeClass shape);
+    public void removeShape(AbstractShapeClass shape);
 
-    public Shape[] getShapes();
+    public AbstractShapeClass[] getShapes();
 
     public void refresh(Graphics canvas);
 }
