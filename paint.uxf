@@ -5,11 +5,11 @@
 + shapes.LineSegment (point1 : Point, point2 : Point)
 + draw(canvas : Graphics )
 + contains (point : Point) : boolean
-+ moveTo (point : Point)</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>84</x><y>421</y><w>252</w><h>144</h></coordinates><panel_attributes>shapes.Circle
++ moveTo (point : Point)</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>84</x><y>421</y><w>252</w><h>144</h></coordinates><panel_attributes>shapes.Oval
 --
 - radius : int
 --
-+ shapes.Circle (point : Point, radius : int)
++ shapes.Oval (point : Point, radius : int)
 + draw(canvas : Graphics )
 + contains (point : Point) : boolean
 + moveTo (point : Point)</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>456</x><y>625</y><w>348</w><h>204</h></coordinates><panel_attributes>shapes.Rectangle

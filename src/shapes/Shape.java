@@ -12,4 +12,8 @@ public interface Shape {
     public Color getColor();
     public void setFillColor(Color fillColor);
     public Color getFillColor();
+
+    public Point[] getPoints();
+    public int containWidth();
+    public int containHeight();
 }

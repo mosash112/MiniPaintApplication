@@ -1,9 +1,9 @@
+import shapes.*;
+import shapes.Rectangle;
+
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
+import java.awt.event.*;
 
 public class Gui implements MouseListener, MouseMotionListener {
     Engine engine;
@@ -19,7 +19,7 @@ public class Gui implements MouseListener, MouseMotionListener {
     final JComboBox<String> shpcombox = new JComboBox<>(names);
     private final JButton colorbtn = new JButton("Colorize");
     private final JButton delbtn = new JButton("Delete");
-    private final JButton circlebtn = new JButton("Circle");
+    private final JButton ovalbtn = new JButton("Oval");
     private final JButton linebtn = new JButton("Line Segment");
     private final JButton tribtn = new JButton("Triangle");
     private final JButton rectbtn = new JButton("Rectangle");
@@ -37,12 +37,14 @@ public class Gui implements MouseListener, MouseMotionListener {
     private final JLabel cirylbl = new JLabel("Y :");
     private final JLabel circleColorlbl = new JLabel("Color :");
     private final JLabel circleFillColorlbl = new JLabel("Fill Color :");
-    private final JLabel radlbl = new JLabel("Radius :");
+    private final JLabel circleHeilbl = new JLabel("Vertical Radius :");
+    private final JLabel circleWidlbl = new JLabel("Horizontal Radius :");
     private final JTextField cirxtxt = new JTextField(10);
     private final JTextField cirytxt = new JTextField(10);
     private final JButton circleColor = new JButton("select Border Color");
     private final JButton circleFillColor = new JButton("select Fill Color");
-    private final JTextField radtxt = new JTextField(10);
+    private final JTextField circleHeitxt = new JTextField(10);
+    private final JTextField circleWidtxt = new JTextField(10);
     private final JButton createCircleBtn = new JButton("Create Circle");
 
     //    rectangle parameters window components
@@ -59,8 +61,8 @@ public class Gui implements MouseListener, MouseMotionListener {
     private final JTextField rectytxt = new JTextField(10);
     private final JButton rectColor = new JButton("select Border Color");
     private final JButton rectFillColor = new JButton("select Fill Color");
-    private final JTextField heitxt = new JTextField(10);
-    private final JTextField widtxt = new JTextField(10);
+    private final JTextField rectHeitxt = new JTextField(10);
+    private final JTextField rectWidtxt = new JTextField(10);
     private final JButton createRectBtn = new JButton("Create Rectangle");
 
     //    line parameters window components
@@ -141,7 +143,7 @@ public class Gui implements MouseListener, MouseMotionListener {
 
         c.gridx = 2;
         c.gridy = 0;
-        mainPanel.add(circlebtn,c);
+        mainPanel.add(ovalbtn,c);
 
         c.gridx = 3;
         c.gridy = 0;
@@ -168,9 +170,10 @@ public class Gui implements MouseListener, MouseMotionListener {
         c.fill = GridBagConstraints.BOTH;
         mainPanel.add(drwcanv,c);
 
+        shpcombox.addActionListener(e -> selectedShape());
         colorbtn.addActionListener(e -> colorizeButtonPressed(2));
         delbtn.addActionListener(e -> deleteButtonPressed());
-        circlebtn.addActionListener(e -> {flag = 1;shapeParameters();});
+        ovalbtn.addActionListener(e -> {flag = 1;shapeParameters();});
         linebtn.addActionListener(e -> {flag = 2;shapeParameters();});
         tribtn.addActionListener(e -> {flag = 3;shapeParameters();});
         rectbtn.addActionListener(e -> {flag = 4;shapeParameters();});
@@ -245,13 +248,23 @@ public class Gui implements MouseListener, MouseMotionListener {
 
         c.gridx = 0;
         c.gridy = 3;
-        circlePanel.add(radlbl,c);
+        circlePanel.add(circleHeilbl,c);
 
-        radtxt.setMaximumSize(radtxt.getPreferredSize());
-        radtxt.setAlignmentX(Component.CENTER_ALIGNMENT);
+        circleHeitxt.setMaximumSize(circleHeitxt.getPreferredSize());
+        circleHeitxt.setAlignmentX(Component.CENTER_ALIGNMENT);
         c.gridx = 1;
         c.gridy = 3;
-        circlePanel.add(radtxt,c);
+        circlePanel.add(circleHeitxt,c);
+
+        c.gridx = 2;
+        c.gridy = 3;
+        circlePanel.add(circleWidlbl,c);
+
+        circleWidtxt.setMaximumSize(circleWidtxt.getPreferredSize());
+        circleWidtxt.setAlignmentX(Component.CENTER_ALIGNMENT);
+        c.gridx = 3;
+        c.gridy = 3;
+        circlePanel.add(circleWidtxt,c);
 
         c.gridx = 1;
         c.gridy = 4;
@@ -263,9 +276,15 @@ public class Gui implements MouseListener, MouseMotionListener {
         createCircleBtn.addActionListener(e -> checkCircleParam());
 
         circleFrame.add(circlePanel,BorderLayout.CENTER);
-        circleFrame.setSize(450, 220);
+        circleFrame.setSize(550, 220);
         circleFrame.setLocation(300,400);
         circleFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        circleFrame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                mainFrame.setVisible(true);
+            }
+        });
         circleFrame.setTitle("Circle attributes");
         circleFrame.setVisible(false);
     }
@@ -273,7 +292,7 @@ public class Gui implements MouseListener, MouseMotionListener {
     private void checkCircleParam() {
         Color fillColor = newFill, color = newBorder;
         Point[] points = new Point[]{new Point(0, 0), new Point(0, 0), new Point(0, 0)};
-        int rad = 0;
+        int hei = 0, wid = 0;
 
         if (!cirxtxt.getText().isBlank() && !cirytxt.getText().isBlank()) {
             try {
@@ -284,15 +303,23 @@ public class Gui implements MouseListener, MouseMotionListener {
             cirxtxt.setText("");
             cirytxt.setText("");
         }
-        if(!radtxt.getText().isBlank()) {
+        if(!circleHeitxt.getText().isBlank()) {
             try{
-                rad = Integer.parseInt(radtxt.getText());
+                hei = Integer.parseInt(circleHeitxt.getText());
             }catch (NumberFormatException e) {
                 JOptionPane.showMessageDialog(opt, "enter numbers only","Input error", JOptionPane.WARNING_MESSAGE);
             }
         }
-        radtxt.setText("");
-        newShape(flag, points, color, fillColor, rad, rad);
+        if(!circleWidtxt.getText().isBlank()) {
+            try{
+                wid = Integer.parseInt(circleWidtxt.getText());
+            }catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(opt, "enter numbers only","Input error", JOptionPane.WARNING_MESSAGE);
+            }
+        }
+        circleHeitxt.setText("");
+        circleWidtxt.setText("");
+        newShape(flag, points, color, fillColor, hei, wid);
     }
 
     public void newRect(){
@@ -351,11 +378,11 @@ public class Gui implements MouseListener, MouseMotionListener {
         c.gridy = 3;
         rectPanel.add(heilbl,c);
 
-        heitxt.setMaximumSize(heitxt.getPreferredSize());
-        heitxt.setAlignmentX(Component.CENTER_ALIGNMENT);
+        rectHeitxt.setMaximumSize(rectHeitxt.getPreferredSize());
+        rectHeitxt.setAlignmentX(Component.CENTER_ALIGNMENT);
         c.gridx = 1;
         c.gridy = 3;
-        rectPanel.add(heitxt,c);
+        rectPanel.add(rectHeitxt,c);
 
         c.gridx = 2;
         c.gridy = 3;
@@ -363,7 +390,7 @@ public class Gui implements MouseListener, MouseMotionListener {
 
         c.gridx = 3;
         c.gridy = 3;
-        rectPanel.add(widtxt,c);
+        rectPanel.add(rectWidtxt,c);
 
         c.gridx = 1;
         c.gridy = 4;
@@ -378,6 +405,12 @@ public class Gui implements MouseListener, MouseMotionListener {
         rectFrame.setSize(450, 220);
         rectFrame.setLocation(300,400);
         rectFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        rectFrame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                mainFrame.setVisible(true);
+            }
+        });
         rectFrame.setTitle("Rectangle attributes");
         rectFrame.setVisible(false);
     }
@@ -396,22 +429,22 @@ public class Gui implements MouseListener, MouseMotionListener {
         }
         rectxtxt.setText("");
         rectytxt.setText("");
-        if(!heitxt.getText().isBlank()) {
+        if(!rectHeitxt.getText().isBlank()) {
             try{
-                hei = Integer.parseInt(heitxt.getText());
+                hei = Integer.parseInt(rectHeitxt.getText());
             }catch (NumberFormatException e) {
                 JOptionPane.showMessageDialog(opt, "enter numbers only","Input error", JOptionPane.WARNING_MESSAGE);
             }
         }
-        heitxt.setText("");
-        if(!widtxt.getText().isBlank()) {
+        rectHeitxt.setText("");
+        if(!rectWidtxt.getText().isBlank()) {
             try{
-                wid = Integer.parseInt(widtxt.getText());
+                wid = Integer.parseInt(rectWidtxt.getText());
             }catch (NumberFormatException e) {
                 JOptionPane.showMessageDialog(opt, "enter numbers only","Input error", JOptionPane.WARNING_MESSAGE);
             }
         }
-        widtxt.setText("");
+        rectWidtxt.setText("");
 
         newShape(flag, points, color, fillColor, hei, wid);
     }
@@ -485,7 +518,13 @@ public class Gui implements MouseListener, MouseMotionListener {
         lineFrame.add(linePanel,BorderLayout.CENTER);
         lineFrame.setSize(450, 220);
         lineFrame.setLocation(300,400);
-        lineFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        lineFrame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
+        lineFrame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                mainFrame.setVisible(true);
+            }
+        });
         lineFrame.setTitle("Line attributes");
         lineFrame.setVisible(false);
     }
@@ -613,6 +652,12 @@ public class Gui implements MouseListener, MouseMotionListener {
         triFrame.setSize(450, 240);
         triFrame.setLocation(300,400);
         triFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        triFrame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                mainFrame.setVisible(true);
+            }
+        });
         triFrame.setTitle("Triangle attributes");
         triFrame.setVisible(false);
     }
@@ -653,6 +698,7 @@ public class Gui implements MouseListener, MouseMotionListener {
     }
 
     public int selectedShape(){
+
         return shpcombox.getSelectedIndex();
     }
 
@@ -706,8 +752,8 @@ public class Gui implements MouseListener, MouseMotionListener {
         }
     }
 
-    public void newShape(int f, Point[] points, Color color, Color fillColor, int rad, int wid) {
-        engine.newShape(f, points, color, fillColor, rad, wid);
+    public void newShape(int f, Point[] points, Color color, Color fillColor, int hei, int wid) {
+        engine.newShape(f, points, color, fillColor, hei, wid);
         updateExistShapes();
         mainFrame.setVisible(true);
         switch (f) {
@@ -746,8 +792,8 @@ public class Gui implements MouseListener, MouseMotionListener {
         int x, y;
         x = e.getX();
         y = e.getY();
-        Point p = new Point(x, y);
-        selected = engine.checkContain(p);
+        Point p = new Point(x, y), points[] = new Point[3];
+        selected = engine.selectShape(p);
         shpcombox.setSelectedIndex(selected+1);
     }
 

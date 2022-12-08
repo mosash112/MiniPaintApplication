@@ -12,11 +12,28 @@ public class Rectangle extends AbstractShapeClass{
         this.width = width;
     }
 
+    @Override
+    public Point[] getPoints() {
+        Point[] points = new Point[3];
+        points[0] = this.getPosition();
+        return points;
+    }
+
+    @Override
+    public int containWidth() {
+        return width;
+    }
+
+    @Override
+    public int containHeight() {
+        return height;
+    }
+
     public void draw(Graphics canvas) {
         canvas.setColor(this.getFillColor());
-        canvas.fillRect((int) this.getPosition().getX(), (int) this.getPosition().getY(), (int) this.width, (int) this.height);
+        canvas.fillRect((int) this.getPosition().getX(), (int) this.getPosition().getY(), this.width, this.height);
         canvas.setColor(this.getColor());
-        canvas.drawRect((int)this.getPosition().getX(),(int)this.getPosition().getY(),(int)this.width,(int)this.height);
+        canvas.drawRect((int) this.getPosition().getX(), (int)this.getPosition().getY(), this.width, this.height);
     }
 
     public boolean contains(Point point){
