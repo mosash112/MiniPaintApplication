@@ -3,7 +3,6 @@ import shapes.Rectangle;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Engine implements DrawingEngine{
     ArrayList<AbstractShapeClass> shps = new ArrayList<>();
@@ -28,13 +27,23 @@ public class Engine implements DrawingEngine{
         System.out.println("-----------------");
     }
 
-    public int checkContain(Point point){
+    public int selectShape(Point point){
         int index = -1;
         for (AbstractShapeClass s:shps) {
             if (s.contains(point)) {
                 index = shps.indexOf(s);
                 System.out.println(index);
             }
+        }
+        AbstractShapeClass shape = shps.get(index);
+        if (shape.getClass().isAssignableFrom(Oval.class)) {
+            drawCorners(1, shape, shape.getPoints());
+        }else if (shape.getClass().isAssignableFrom(LineSegment.class)) {
+            drawCorners(2, shape, shape.getPoints());
+        }else if (shape.getClass().isAssignableFrom(Triangle.class)) {
+            drawCorners(3, shape, shape.getPoints());
+        }else if (shape.getClass().isAssignableFrom(Rectangle.class)) {
+            drawCorners(4, shape, shape.getPoints());
         }
         return index;
     }
@@ -58,13 +67,13 @@ public class Engine implements DrawingEngine{
         gui.drwcanv.repaint();
     }
 
-    public void newShape(int flag, Point[] ps, Color clr, Color fclr, int rad, int wid) {
+    public void newShape(int flag, Point[] ps, Color clr, Color fclr, int hei, int wid) {
         AbstractShapeClass shape = null;
         counter++;
         System.out.println(counter);
         switch (flag) {
             case 1 -> {
-                shape = new Circle(ps[0], rad);
+                shape = new Oval(ps[0], hei, wid);
                 nms.add("circle_" + counter);
             }
             case 2 -> {
@@ -76,7 +85,7 @@ public class Engine implements DrawingEngine{
                 nms.add("triangle_" + counter);
             }
             case 4 -> {
-                shape = new Rectangle(ps[0], rad, wid);
+                shape = new Rectangle(ps[0], hei, wid);
                 nms.add("rect_" + counter);
             }
         }
@@ -84,5 +93,33 @@ public class Engine implements DrawingEngine{
         shape.setFillColor(fclr);
         shps.add(shape);
         addShape(shape);
+    }
+
+    public void drawCorners(int flag, AbstractShapeClass shape, Point[] points){
+        ArrayList<Rectangle> corners = new ArrayList<>();
+        int hei = 0, wid = 0;
+        switch (flag){
+            case 1:
+            case 4:
+                hei = shape.containHeight();
+                wid = shape.containWidth();
+                corners.add(new Rectangle(new Point((int)points[0].getX(), (int)points[0].getY()), 5, 5));
+                corners.add(new Rectangle(new Point((int)points[0].getX()+(wid-5), (int)points[0].getY()), 5, 5));
+                corners.add(new Rectangle(new Point((int)points[0].getX(), (int)points[0].getY()+(hei-5)), 5, 5));
+                corners.add(new Rectangle(new Point((int)points[0].getX()+(wid-5), (int)points[0].getY()+(hei-5)), 5, 5));
+                break;
+            case 2:
+                corners.add(new Rectangle(new Point((int)points[0].getX()-2, (int)points[0].getY()-2), 5, 5));
+                corners.add(new Rectangle(new Point((int)points[1].getX()-2, (int)points[1].getY()-2), 5, 5));
+                break;
+            case 3:
+                corners.add(new Rectangle(new Point((int)points[0].getX()-2, (int)points[0].getY()-2), 5, 5));
+                corners.add(new Rectangle(new Point((int)points[1].getX()-2, (int)points[1].getY()-2), 5, 5));
+                corners.add(new Rectangle(new Point((int)points[2].getX()-2, (int)points[2].getY()-2), 5, 5));
+                break;
+        }
+        for (Rectangle r:corners) {
+            r.draw(gui.drwcanv.getGraphics());
+        }
     }
 }

@@ -10,6 +10,24 @@ public class LineSegment extends AbstractShapeClass{
         this.point2 = point2;
     }
 
+    @Override
+    public Point[] getPoints() {
+        Point[] points = new Point[3];
+        points[0] = this.getPosition();
+        points[1] = this.point2;
+        return points;
+    }
+
+    @Override
+    public int containWidth() {
+        return 0;
+    }
+
+    @Override
+    public int containHeight() {
+        return 0;
+    }
+
     public void draw(Graphics canvas){
         canvas.setColor(this.getColor());
         canvas.drawLine((int)this.getPosition().getX(),(int)this.getPosition().getY(), (int)this.point2.getX(),(int)this.point2.getY());
