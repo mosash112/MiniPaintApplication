@@ -39,22 +39,22 @@ public class Gui implements MouseListener, MouseMotionListener {
     private final JPanel colorPanel = new JPanel();
 
     //    circle parameters window components
-    private final JFrame circleFrame = new JFrame();
-    private final JPanel circlePanel = new JPanel();
-    private final JLabel cirposlbl = new JLabel("Position");
-    private final JLabel cirxlbl = new JLabel("X :");
-    private final JLabel cirylbl = new JLabel("Y :");
-    private final JLabel circleColorlbl = new JLabel("Color :");
-    private final JLabel circleFillColorlbl = new JLabel("Fill Color :");
-    private final JLabel circleHeilbl = new JLabel("Vertical Radius :");
-    private final JLabel circleWidlbl = new JLabel("Horizontal Radius :");
-    private final JTextField cirxtxt = new JTextField(10);
-    private final JTextField cirytxt = new JTextField(10);
-    private final JButton circleColor = new JButton("select Border Color");
-    private final JButton circleFillColor = new JButton("select Fill Color");
-    private final JTextField circleHeitxt = new JTextField(10);
-    private final JTextField circleWidtxt = new JTextField(10);
-    private final JButton createCircleBtn = new JButton("Create Circle");
+    private final JFrame ovalFrame = new JFrame();
+    private final JPanel ovalPanel = new JPanel();
+    private final JLabel ovalposlbl = new JLabel("Position");
+    private final JLabel ovalxlbl = new JLabel("X :");
+    private final JLabel ovalylbl = new JLabel("Y :");
+    private final JLabel ovalColorlbl = new JLabel("Color :");
+    private final JLabel ovalFillColorlbl = new JLabel("Fill Color :");
+    private final JLabel ovalHeilbl = new JLabel("Vertical Radius :");
+    private final JLabel ovalWidlbl = new JLabel("Horizontal Radius :");
+    private final JTextField ovalxtxt = new JTextField(10);
+    private final JTextField ovalytxt = new JTextField(10);
+    private final JButton ovalColor = new JButton("select Border Color");
+    private final JButton ovalFillColor = new JButton("select Fill Color");
+    private final JTextField ovalHeitxt = new JTextField(10);
+    private final JTextField ovalWidtxt = new JTextField(10);
+    private final JButton createOvalBtn = new JButton("Create Circle");
 
     //    rectangle parameters window components
     private final JFrame rectFrame = new JFrame();
@@ -115,7 +115,7 @@ public class Gui implements MouseListener, MouseMotionListener {
 
     public Gui() {
         window();
-        newCircle();
+        newOval();
         newRect();
         newLine();
         newTri();
@@ -222,130 +222,130 @@ public class Gui implements MouseListener, MouseMotionListener {
         c.gridwidth = 1;
     }
 
-    public void newCircle(){
-        circlePanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 10, 15));
-        circlePanel.setLayout(new GridBagLayout());
+    public void newOval(){
+        ovalPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 10, 15));
+        ovalPanel.setLayout(new GridBagLayout());
 
         constraintReset();
 
         c.gridx = 0;
         c.gridy = 0;
         c.gridwidth = 1;
-        circlePanel.add(cirposlbl,c);
+        ovalPanel.add(ovalposlbl,c);
 
         c.gridx = 0;
         c.gridy = 1;
-        circlePanel.add(cirxlbl,c);
+        ovalPanel.add(ovalxlbl,c);
 
-        cirxtxt.setMaximumSize(cirxtxt.getPreferredSize());
-        cirxtxt.setAlignmentX(Component.CENTER_ALIGNMENT);
+        ovalxtxt.setMaximumSize(ovalxtxt.getPreferredSize());
+        ovalxtxt.setAlignmentX(Component.CENTER_ALIGNMENT);
         c.gridx = 1;
         c.gridy = 1;
-        circlePanel.add(cirxtxt,c);
+        ovalPanel.add(ovalxtxt,c);
 
         c.gridx = 2;
         c.gridy = 1;
-        circlePanel.add(cirylbl,c);
+        ovalPanel.add(ovalylbl,c);
 
-        cirytxt.setMaximumSize(cirytxt.getPreferredSize());
-        cirytxt.setAlignmentX(Component.CENTER_ALIGNMENT);
+        ovalytxt.setMaximumSize(ovalytxt.getPreferredSize());
+        ovalytxt.setAlignmentX(Component.CENTER_ALIGNMENT);
         c.gridx = 3;
         c.gridy = 1;
-        circlePanel.add(cirytxt,c);
+        ovalPanel.add(ovalytxt,c);
 
         c.gridx = 0;
         c.gridy = 2;
-        circlePanel.add(circleColorlbl,c);
+        ovalPanel.add(ovalColorlbl,c);
 
-        circleColor.setMaximumSize(circleColor.getPreferredSize());
-        circleColor.setAlignmentX(Component.CENTER_ALIGNMENT);
+        ovalColor.setMaximumSize(ovalColor.getPreferredSize());
+        ovalColor.setAlignmentX(Component.CENTER_ALIGNMENT);
         c.gridx = 1;
         c.gridy = 2;
-        circlePanel.add(circleColor,c);
+        ovalPanel.add(ovalColor,c);
 
         c.gridx = 2;
         c.gridy = 2;
-        circlePanel.add(circleFillColorlbl,c);
+        ovalPanel.add(ovalFillColorlbl,c);
 
-        circleFillColor.setMaximumSize(circleFillColor.getPreferredSize());
-        circleFillColor.setAlignmentX(Component.CENTER_ALIGNMENT);
+        ovalFillColor.setMaximumSize(ovalFillColor.getPreferredSize());
+        ovalFillColor.setAlignmentX(Component.CENTER_ALIGNMENT);
         c.gridx = 3;
         c.gridy = 2;
-        circlePanel.add(circleFillColor,c);
+        ovalPanel.add(ovalFillColor,c);
 
         c.gridx = 0;
         c.gridy = 3;
-        circlePanel.add(circleHeilbl,c);
+        ovalPanel.add(ovalHeilbl,c);
 
-        circleHeitxt.setMaximumSize(circleHeitxt.getPreferredSize());
-        circleHeitxt.setAlignmentX(Component.CENTER_ALIGNMENT);
+        ovalHeitxt.setMaximumSize(ovalHeitxt.getPreferredSize());
+        ovalHeitxt.setAlignmentX(Component.CENTER_ALIGNMENT);
         c.gridx = 1;
         c.gridy = 3;
-        circlePanel.add(circleHeitxt,c);
+        ovalPanel.add(ovalHeitxt,c);
 
         c.gridx = 2;
         c.gridy = 3;
-        circlePanel.add(circleWidlbl,c);
+        ovalPanel.add(ovalWidlbl,c);
 
-        circleWidtxt.setMaximumSize(circleWidtxt.getPreferredSize());
-        circleWidtxt.setAlignmentX(Component.CENTER_ALIGNMENT);
+        ovalWidtxt.setMaximumSize(ovalWidtxt.getPreferredSize());
+        ovalWidtxt.setAlignmentX(Component.CENTER_ALIGNMENT);
         c.gridx = 3;
         c.gridy = 3;
-        circlePanel.add(circleWidtxt,c);
+        ovalPanel.add(ovalWidtxt,c);
 
         c.gridx = 1;
         c.gridy = 4;
         c.gridwidth = 2;
-        circlePanel.add(createCircleBtn,c);
+        ovalPanel.add(createOvalBtn,c);
 
-        circleColor.addActionListener(e -> colorizeButtonPressed(0));
-        circleFillColor.addActionListener(e -> colorizeButtonPressed(1));
-        createCircleBtn.addActionListener(e -> checkCircleParam());
+        ovalColor.addActionListener(e -> colorizeButtonPressed(0));
+        ovalFillColor.addActionListener(e -> colorizeButtonPressed(1));
+        createOvalBtn.addActionListener(e -> checkOvalParam());
 
-        circleFrame.add(circlePanel,BorderLayout.CENTER);
-        circleFrame.setSize(550, 220);
-        circleFrame.setLocation(300,400);
-        circleFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        circleFrame.addWindowListener(new WindowAdapter() {
+        ovalFrame.add(ovalPanel,BorderLayout.CENTER);
+        ovalFrame.setSize(550, 220);
+        ovalFrame.setLocation(300,400);
+        ovalFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        ovalFrame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
                 mainFrame.setVisible(true);
             }
         });
-        circleFrame.setTitle("Circle attributes");
-        circleFrame.setVisible(false);
+        ovalFrame.setTitle("Circle attributes");
+        ovalFrame.setVisible(false);
     }
 
-    private void checkCircleParam() {
+    private void checkOvalParam() {
         Color fillColor = newFill, color = newBorder;
         Point[] points = new Point[]{new Point(0, 0), new Point(0, 0), new Point(0, 0)};
         int hei = 0, wid = 0;
 
-        if (!cirxtxt.getText().isBlank() && !cirytxt.getText().isBlank()) {
+        if (!ovalxtxt.getText().isBlank() && !ovalytxt.getText().isBlank()) {
             try {
-                points[0] = new Point(Integer.parseInt(cirxtxt.getText()), Integer.parseInt(cirytxt.getText()));
+                points[0] = new Point(Integer.parseInt(ovalxtxt.getText()), Integer.parseInt(ovalytxt.getText()));
             } catch (NumberFormatException e) {
                 JOptionPane.showMessageDialog(opt, "enter numbers only", "Input error", JOptionPane.WARNING_MESSAGE);
             }
-            cirxtxt.setText("");
-            cirytxt.setText("");
+            ovalxtxt.setText("");
+            ovalytxt.setText("");
         }
-        if(!circleHeitxt.getText().isBlank()) {
+        if(!ovalHeitxt.getText().isBlank()) {
             try{
-                hei = Integer.parseInt(circleHeitxt.getText());
+                hei = Integer.parseInt(ovalHeitxt.getText());
             }catch (NumberFormatException e) {
                 JOptionPane.showMessageDialog(opt, "enter numbers only","Input error", JOptionPane.WARNING_MESSAGE);
             }
         }
-        if(!circleWidtxt.getText().isBlank()) {
+        if(!ovalWidtxt.getText().isBlank()) {
             try{
-                wid = Integer.parseInt(circleWidtxt.getText());
+                wid = Integer.parseInt(ovalWidtxt.getText());
             }catch (NumberFormatException e) {
                 JOptionPane.showMessageDialog(opt, "enter numbers only","Input error", JOptionPane.WARNING_MESSAGE);
             }
         }
-        circleHeitxt.setText("");
-        circleWidtxt.setText("");
+        ovalHeitxt.setText("");
+        ovalWidtxt.setText("");
         newShape(flag, points, color, fillColor, hei, wid);
         newFill = trans;
         newBorder = Color.BLACK;
@@ -742,8 +742,8 @@ public class Gui implements MouseListener, MouseMotionListener {
         updateExistShapes();
         engine.refresh(drwcanv.getGraphics());
         shpcombox.setSelectedIndex(index);
-        engine.selectShape(engine.getShapes()[index-1].getDraggingPoint());
-        System.out.println("shape: "+engine.getShapes()[index-1]+" index: "+(index-1));
+//        engine.selectShape(engine.getShapes()[index-1].getDraggingPoint());
+//        System.out.println("shape: "+engine.getShapes()[index-1]+" index: "+(index-1));
         engine.resetSelection();
     }
 
@@ -814,7 +814,7 @@ public class Gui implements MouseListener, MouseMotionListener {
         mainFrame.setVisible(false);
         switch (flag) {
             case 1 ->     //circle
-                    circleFrame.setVisible(true);
+                    ovalFrame.setVisible(true);
             case 2 ->     //line
                     lineFrame.setVisible(true);
             case 3 ->     //triangle
